@@ -178,8 +178,14 @@ fn text_embeddings(
     let pad_id = match &clip_config.pad_with {
         Some(padding) => *tokenizer.get_vocab(true).get(padding.as_str()).unwrap(),
         None => {
-            let eos = tokenizer.encode("", false).map_err(E::msg)?;
-            *eos.get_ids().last().unwrap()
+            let vocab = tokenizer.get_vocab(true);
+        
+            let eos_token = "<|endoftext|>";
+            
+            match vocab.get(eos_token) {
+                Some(id) => *id,
+                None => panic!("❌ EOS token '<|endoftext|>' not found in vocab"),
+            }
         }
     };
 
