@@ -7,8 +7,6 @@ use tokenizers::Tokenizer;
 pub enum StableDiffusionVersion {
     #[value(name = "v1-5")]
     V1_5,
-    #[value(name = "v2-1")]
-    V2_1,
     #[value(name = "xl")]
     Xl,
     #[value(name = "turbo")]
@@ -34,9 +32,7 @@ impl ModelFile {
         let (repo, path) = match self {
             Self::Tokenizer => {
                 let repo = match version {
-                    StableDiffusionVersion::V1_5 | StableDiffusionVersion::V2_1 => {
-                        "openai/clip-vit-base-patch32"
-                    }
+                    StableDiffusionVersion::V1_5 => "openai/clip-vit-base-patch32",
                     StableDiffusionVersion::Xl | StableDiffusionVersion::Turbo => {
                         "openai/clip-vit-large-patch14"
                     }
@@ -87,8 +83,7 @@ impl ModelFile {
 impl StableDiffusionVersion {
     fn repo(&self) -> &'static str {
         match self {
-            Self::V1_5 => "runwayml/stable-diffusion-v1-5",
-            Self::V2_1 => "stabilityai/stable-diffusion-2-1",
+            Self::V1_5 => "sd-legacy/stable-diffusion-v1-5",
             Self::Xl => "stabilityai/stable-diffusion-xl-base-1.0",
             Self::Turbo => "stabilityai/sdxl-turbo",
         }
@@ -273,21 +268,16 @@ pub fn run(args: RunArgs) -> Result<()> {
 
     let height = args.height.unwrap_or_else(|| match sd_version {
         StableDiffusionVersion::V1_5 | StableDiffusionVersion::Turbo => 512,
-        StableDiffusionVersion::V2_1 => 768,
         StableDiffusionVersion::Xl => 1024,
     });
     let width = args.width.unwrap_or_else(|| match sd_version {
         StableDiffusionVersion::V1_5 | StableDiffusionVersion::Turbo => 512,
-        StableDiffusionVersion::V2_1 => 768,
         StableDiffusionVersion::Xl => 1024,
     });
 
     let sd_config = match sd_version {
         StableDiffusionVersion::V1_5 => {
             stable_diffusion::StableDiffusionConfig::v1_5(None, Some(height), Some(width))
-        }
-        StableDiffusionVersion::V2_1 => {
-            stable_diffusion::StableDiffusionConfig::v2_1(None, Some(height), Some(width))
         }
         StableDiffusionVersion::Xl => {
             stable_diffusion::StableDiffusionConfig::sdxl(None, Some(height), Some(width))

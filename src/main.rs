@@ -29,7 +29,7 @@ struct Args {
     n_steps: Option<usize>,
 
     /// Stable Diffusion version to use.
-    #[arg(long, value_enum, default_value = "v2-1")]
+    #[arg(long, value_enum, default_value = "v1-5")]
     sd_version: candle_diffusion::StableDiffusionVersion,
 
     /// Use half-precision (f16) weights.

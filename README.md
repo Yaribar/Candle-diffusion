@@ -35,7 +35,7 @@ make run-metal             # Metal GPU (Mac)
 | Flag | Default | Description |
 |---|---|---|
 | `--prompt` | "A very realistic photo..." | Text prompt |
-| `--sd-version` | `v2-1` | Model: `v1-5`, `v2-1`, `xl`, `turbo` |
+| `--sd-version` | `v1-5` | Model: `v1-5`, `xl`, `turbo` |
 | `--n-steps` | 30 (1 for turbo) | Diffusion steps |
 | `--cpu` | off | Force CPU |
 | `--use-f16` | off | Half-precision weights |
@@ -70,5 +70,5 @@ docker run --rm -v hf-cache:/root/.cache/huggingface \
 
 #### Disk Space
 
-No libtorch download needed. Model weights (~5 GB for SD v2.1) are
+No libtorch download needed. Model weights (~5 GB for SD v1.5) are
 automatically downloaded on first run to `~/.cache/huggingface/` via `hf-hub`.
